@@ -23,6 +23,23 @@
   a {
     margin-right: 1rem;
     font-size: 1.5rem;
+    text-decoration: none;
+    &:hover {
+      font-weight: bold;
+    }
+    &:visited {
+      color: $light-mode-text-color;
+    }
+  }
+  &.dark_mode {
+    background-color: $dark-mode-background-secondary;
+    box-shadow: 0 0 0.3rem $dark-mode-shadow;
+    color: $dark-mode-text-color;
+    a {
+      &:visited {
+        color: $dark-mode-text-color;
+      }
+    }
   }
   @media screen and (max-width: 768px) {
     padding: 1.5rem 2rem;

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Main from "./pages/main/Main";
 import Favorites from "./pages/favorites/Favorites";
 import Nav from "./components/nav/Nav";
+
 function App() {
   return (
     <Router>

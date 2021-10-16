@@ -13,7 +13,6 @@ import { useSelector } from "react-redux";
 
 function ForecastDay({ day }) {
   const isMetric = useSelector((state) => state.weatherSlice.isMetric);
-
   const dayNum = new Date(day.Date).getDay();
   const checkWeatherIcon = (weatherIcon) => {
     if (weatherIcon) {
@@ -74,8 +73,10 @@ function ForecastDay({ day }) {
 }
 
 export default function Forecast({ forecast }) {
+  const darkMode = useSelector((state) => state.weatherSlice.darkMode);
+
   return (
-    <div className="forecast_list">
+    <div className={`forecast_list ${darkMode ? "dark_mode" : "light_mode"}`}>
       {forecast.map((day, index) => {
         return <ForecastDay key={index} day={day} />;
       })}

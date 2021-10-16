@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Forecast from "../../components/forecast/Forecast";
 import Search from "../../components/search/Search";
+import ReactTooltip from "react-tooltip";
 import "./main.scss";
 import cloudy from "../../images/cloudy.png";
 import sunny from "../../images/sunny.png";
@@ -11,19 +12,29 @@ import rainy from "../../images/rainy.png";
 import snowy from "../../images/snowy.png";
 import snowyNight from "../../images/snowy-night.png";
 import { ReactComponent as StarImage } from "../../images/star.svg";
+import { ReactComponent as LightMode } from "../../images/light-mode.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchFiveDayForecast,
   fetchLocationByGeolocation,
   setCurrentLocationName,
+  setCurrentLocationKey,
   fetchCurrentLocation,
+  changeSystem,
+  addToFavorites,
+  getFavorites,
+  removeFromFavorites,
+  changeMode,
+  getMode,
 } from "../../redux/weatherSlice";
 
 export default function Main() {
   const dispatch = useDispatch();
-
   const currentLocation = useSelector(
     (state) => state.weatherSlice.currentLocation.location[0]
+  );
+  const currentLocationKey = useSelector(
+    (state) => state.weatherSlice.currentLocation.Key
   );
   const currentName = useSelector(
     (state) => state.weatherSlice.currentLocation.Name
@@ -31,15 +42,14 @@ export default function Main() {
   const status = useSelector(
     (state) => state.weatherSlice.currentLocation.status
   );
-
   const currentLocationGeo = useSelector(
     (state) => state.weatherSlice.currentLocationGeo
   );
-
   const forecast = useSelector((state) => state.weatherSlice.currentForecast);
-
   const isMetric = useSelector((state) => state.weatherSlice.isMetric);
-
+  const favorites = useSelector((state) => state.weatherSlice.favorites);
+  const favoritesByKey = favorites.map((location) => location.Key);
+  const darkMode = useSelector((state) => state.weatherSlice.darkMode);
   const checkWeatherIcon = () => {
     const weatherIcon = currentLocation.WeatherIcon;
 
@@ -56,6 +66,18 @@ export default function Main() {
   };
 
   useEffect(() => {
+    const savedMode = localStorage.getItem("savedMode");
+    if (savedMode) {
+      dispatch(getMode(JSON.parse(savedMode)));
+    }
+    const savedSystem = localStorage.getItem("isMetric");
+    if (savedSystem) {
+      dispatch(changeSystem(JSON.parse(savedSystem)));
+    }
+    const savedFavorites = localStorage.getItem("favoriteLocations");
+    if (savedFavorites) {
+      dispatch(getFavorites(JSON.parse(savedFavorites)));
+    }
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(function (position) {
         dispatch(
@@ -65,12 +87,32 @@ export default function Main() {
           })
         ).then((res) => {
           dispatch(fetchCurrentLocation(res.payload.Key)).then(
-            dispatch(setCurrentLocationName(res.payload.LocalizedName))
+            dispatch(setCurrentLocationName(res.payload.LocalizedName)),
+            dispatch(setCurrentLocationKey(res.payload.Key))
           );
         });
       });
+    } else {
+      dispatch(fetchCurrentLocation("215854"))
+        .then(dispatch(fetchFiveDayForecast("215854")))
+        .then(
+          dispatch(setCurrentLocationName("Tel Aviv")),
+          dispatch(setCurrentLocationKey("215854"))
+        );
     }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("savedMode", JSON.stringify(darkMode));
+  }, [darkMode]);
+
+  useEffect(() => {
+    localStorage.setItem("isMetric", JSON.stringify(isMetric));
+  }, [isMetric]);
+
+  useEffect(() => {
+    localStorage.setItem("favoriteLocations", JSON.stringify(favorites));
+  }, [favorites]);
 
   useEffect(() => {
     if (currentLocationGeo.location.Key) {
@@ -78,14 +120,27 @@ export default function Main() {
     }
   }, [currentLocationGeo, dispatch]);
 
-  if (status === "loading" || currentLocationGeo.status === "loading") {
+  if (
+    status === "loading" ||
+    (currentLocationGeo.status === "loading" && status === "loading")
+  ) {
     return <h1>loading</h1>;
   }
   return (
-    <div className="main_page">
+    <div className={`main_page ${darkMode ? "dark_mode" : "light_mode"}`}>
+      <div
+        data-tip={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+        onClick={() => dispatch(changeMode(!darkMode))}
+        className="change_mode"
+      >
+        <LightMode
+          className={`change_mode_img ${darkMode ? "dark" : "light"}`}
+        />
+      </div>
       <div className="search_wrapper">
         <Search />
       </div>
+
       <div className="weather">
         <div className="current_weather">
           <div className="weather_today">
@@ -114,8 +169,25 @@ export default function Main() {
           </div>
 
           <div className="add_to_favorites">
-            <button>
-              <StarImage className="star" />
+            <ReactTooltip />
+            <button
+              data-tip={
+                favoritesByKey.includes(currentLocationKey)
+                  ? "Remove from favorites"
+                  : "Add to favorites"
+              }
+              onClick={() => {
+                if (favoritesByKey.includes(currentLocationKey))
+                  dispatch(removeFromFavorites(currentLocationKey));
+                else
+                  dispatch(addToFavorites({ currentName, currentLocationKey }));
+              }}
+            >
+              <StarImage
+                className={`star ${
+                  favoritesByKey.includes(currentLocationKey) ? "favorite" : ""
+                }`}
+              />
             </button>
           </div>
         </div>

@@ -4,19 +4,24 @@ import {
   fetchCurrentLocation,
   fetchFiveDayForecast,
   setCurrentLocationName,
+  setCurrentLocationKey,
+  searchLocation,
 } from "../../../redux/weatherSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 function ListItem({ item }) {
   const dispatch = useDispatch();
-  const isMetric = useSelector((state) => state.weatherSlice.isMetric);
 
   return (
     <div
       onClick={() =>
         dispatch(fetchCurrentLocation(item.Key))
-          .then(dispatch(fetchFiveDayForecast(item.Key, isMetric)))
-          .then(dispatch(setCurrentLocationName(item.LocalizedName)))
+          .then(dispatch(fetchFiveDayForecast(item.Key)))
+          .then(
+            dispatch(setCurrentLocationName(item.LocalizedName)),
+            dispatch(setCurrentLocationKey(item.Key)),
+            dispatch(searchLocation(""))
+          )
       }
       className="list_item"
     >
@@ -26,8 +31,14 @@ function ListItem({ item }) {
 }
 
 export default function SearchList({ list, focused }) {
+  const darkMode = useSelector((state) => state.weatherSlice.darkMode);
+
   return (
-    <div className={`search_list ${focused ? "is_focused" : ""}`}>
+    <div
+      className={`search_list ${focused ? "is_focused" : ""} ${
+        darkMode ? "dark_mode" : "light_mode"
+      }`}
+    >
       {list.map((item) => {
         return <ListItem key={item.Key} item={item} />;
       })}

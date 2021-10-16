@@ -7,8 +7,9 @@ import "./nav.scss";
 export default function Nav() {
   const dispatch = useDispatch();
   const isMetric = useSelector((state) => state.weatherSlice.isMetric);
+  const darkMode = useSelector((state) => state.weatherSlice.darkMode);
   return (
-    <div className="nav">
+    <div className={`nav ${darkMode ? "dark_mode" : "light_mode"}`}>
       <div>
         <Link to="/">Main</Link>
         <Link to="/favorites">Favorites</Link>

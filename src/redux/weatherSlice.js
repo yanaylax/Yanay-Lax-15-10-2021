@@ -9,6 +9,8 @@ import {
 const initialState = {
   search: "",
   isMetric: true,
+  darkMode: false,
+  favorites: [],
   locationList: {
     status: "loading",
     error: "",
@@ -23,6 +25,7 @@ const initialState = {
     status: "loading",
     error: "",
     Name: "",
+    Key: "",
     location: [
       {
         LocalObservationDateTime: "",
@@ -118,8 +121,32 @@ export const weatherSlice = createSlice({
     setCurrentLocationName: (state, action) => {
       state.currentLocation.Name = action.payload;
     },
+    setCurrentLocationKey: (state, action) => {
+      state.currentLocation.Key = action.payload;
+    },
     changeSystem: (state, action) => {
       state.isMetric = action.payload;
+    },
+    addToFavorites: (state, action) => {
+      const { currentName, currentLocationKey } = action.payload;
+      state.favorites = [
+        ...state.favorites,
+        { Name: currentName, Key: currentLocationKey },
+      ];
+    },
+    removeFromFavorites: (state, action) => {
+      state.favorites = state.favorites.filter(
+        (location) => location.Key !== action.payload
+      );
+    },
+    getFavorites: (state, action) => {
+      state.favorites = action.payload;
+    },
+    changeMode: (state) => {
+      state.darkMode = !state.darkMode;
+    },
+    getMode: (state, action) => {
+      state.darkMode = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -177,7 +204,16 @@ export const weatherSlice = createSlice({
   },
 });
 
-export const { searchLocation, setCurrentLocationName, changeSystem } =
-  weatherSlice.actions;
+export const {
+  searchLocation,
+  setCurrentLocationName,
+  setCurrentLocationKey,
+  changeSystem,
+  addToFavorites,
+  getFavorites,
+  removeFromFavorites,
+  changeMode,
+  getMode,
+} = weatherSlice.actions;
 
 export default weatherSlice;

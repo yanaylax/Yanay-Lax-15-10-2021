@@ -23,4 +23,15 @@
       border-bottom: none;
     }
   }
+  &.dark_mode {
+    background-color: $dark-mode-background-color;
+    box-shadow: 0 0 0.3rem $dark-mode-shadow;
+    .list_item {
+      border-bottom: 0.2rem solid $dark-mode-shadow;
+      color: $dark-mode-text-color;
+      &:hover {
+        background-color: $dark-mode-background-secondary;
+      }
+    }
+  }
 }

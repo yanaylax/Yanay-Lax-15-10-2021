@@ -11,6 +11,7 @@ export default function Search() {
     (state) => state.weatherSlice.locationList.list
   );
   const searchString = useSelector((state) => state.weatherSlice.search);
+  const darkMode = useSelector((state) => state.weatherSlice.darkMode);
   const [focused, setFocused] = useState(false);
   const wrapperRef = useRef(null);
 
@@ -36,7 +37,10 @@ export default function Search() {
   useClickOutside(wrapperRef);
 
   return (
-    <div ref={wrapperRef} className="search_owner">
+    <div
+      ref={wrapperRef}
+      className={`search_owner ${darkMode ? "dark_mode" : "light_mode"}`}
+    >
       <div className="search">
         <img src={searchIcon} alt="search icon" />
         <input
