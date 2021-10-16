@@ -10,6 +10,7 @@ const initialState = {
   search: "",
   isMetric: true,
   darkMode: false,
+  selectFromFavorites: false,
   favorites: [],
   locationList: {
     status: "loading",
@@ -85,6 +86,18 @@ export const fetchCurrentLocation = createAsyncThunk(
   }
 );
 
+export const fetchCurrentLocationForFavorites = createAsyncThunk(
+  "weather/fetchCurrentLocationForFavorites",
+  async (id, { rejectWithValue }) => {
+    try {
+      const res = await getCurrentLocation(id);
+      return await res;
+    } catch (err) {
+      return rejectWithValue([], err);
+    }
+  }
+);
+
 export const fetchFiveDayForecast = createAsyncThunk(
   "weather/fetchFiveDayForecast",
   async (id, { rejectWithValue }) => {
@@ -103,7 +116,6 @@ export const fetchLocationByGeolocation = createAsyncThunk(
     console.log(lat);
     try {
       const res = await getLocationByGeolocation(lat, lon);
-      console.log(res);
       return await res;
     } catch (err) {
       return rejectWithValue([], err);
@@ -148,6 +160,9 @@ export const weatherSlice = createSlice({
     getMode: (state, action) => {
       state.darkMode = action.payload;
     },
+    selectLocation: (state, action) => {
+      state.selectFromFavorites = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchLocations.pending, (state) => {
@@ -174,6 +189,7 @@ export const weatherSlice = createSlice({
       state.currentLocation.status = "error";
       state.currentLocation.error = action.error.message;
     });
+
     builder.addCase(fetchFiveDayForecast.pending, (state) => {
       state.currentForecast.forecast = [];
       state.currentForecast.status = "loading";
@@ -214,6 +230,7 @@ export const {
   removeFromFavorites,
   changeMode,
   getMode,
+  selectLocation,
 } = weatherSlice.actions;
 
 export default weatherSlice;

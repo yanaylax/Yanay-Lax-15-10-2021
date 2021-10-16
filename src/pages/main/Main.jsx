@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Forecast from "../../components/forecast/Forecast";
 import Search from "../../components/search/Search";
 import ReactTooltip from "react-tooltip";
@@ -26,6 +26,7 @@ import {
   removeFromFavorites,
   changeMode,
   getMode,
+  selectLocation,
 } from "../../redux/weatherSlice";
 
 export default function Main() {
@@ -48,6 +49,9 @@ export default function Main() {
   const forecast = useSelector((state) => state.weatherSlice.currentForecast);
   const isMetric = useSelector((state) => state.weatherSlice.isMetric);
   const favorites = useSelector((state) => state.weatherSlice.favorites);
+  const selectFromFavorites = useSelector(
+    (state) => state.weatherSlice.selectFromFavorites
+  );
   const favoritesByKey = favorites.map((location) => location.Key);
   const darkMode = useSelector((state) => state.weatherSlice.darkMode);
   const checkWeatherIcon = () => {
@@ -78,7 +82,8 @@ export default function Main() {
     if (savedFavorites) {
       dispatch(getFavorites(JSON.parse(savedFavorites)));
     }
-    if ("geolocation" in navigator) {
+    if (selectFromFavorites) return dispatch(selectLocation(false));
+    else if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(function (position) {
         dispatch(
           fetchLocationByGeolocation({
