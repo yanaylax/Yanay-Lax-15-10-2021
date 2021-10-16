@@ -1,0 +1,30 @@
+@import "src/vars";
+
+.nav {
+  height: 1.5rem;
+  padding: 1.5rem 5rem;
+  background-color: $light-mode-background-secondary;
+  box-shadow: 0 0 0.3rem $light-mode-shadow;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .choose_degree_system {
+    display: flex;
+    gap: 0.4rem;
+    .not_active:hover {
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .active {
+      font-weight: bold;
+    }
+  }
+  a {
+    margin-right: 1rem;
+    font-size: 1.5rem;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 1.5rem 2rem;
+  }
+}

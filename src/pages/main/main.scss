@@ -1,0 +1,62 @@
+@import "src/vars";
+
+.main_page {
+  height: calc(100vh - 17rem);
+  padding: 2rem 5rem;
+  .search_wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  .weather {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: $light-mode-background-secondary;
+    box-shadow: 0 0 0.3rem $light-mode-shadow;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+  }
+  .weather_today {
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 5rem;
+      margin-right: 1rem;
+    }
+  }
+  .current_weather {
+    display: flex;
+    justify-content: space-between;
+  }
+  .weather_description {
+    font-weight: 200;
+  }
+  .add_to_favorites {
+    button {
+      height: 100%;
+      border: none;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      img {
+      }
+    }
+  }
+  .star {
+    transition: all 0.1s;
+    width: 5rem;
+    height: 4rem;
+    fill: gold;
+    stroke: gold;
+    &:hover {
+      fill: white;
+      stroke: black;
+      cursor: pointer;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    padding: 2rem 2rem;
+  }
+}

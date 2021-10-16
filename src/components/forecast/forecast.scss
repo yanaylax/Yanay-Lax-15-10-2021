@@ -1,0 +1,36 @@
+@import "src/vars";
+
+.forecast_list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  height: 25vh;
+  overflow-x: auto;
+  justify-content: space-between;
+  padding: 1rem;
+  .forecast_day {
+    padding: 1rem;
+    background-color: $light-mode-background-color;
+    box-shadow: 0 0 0.3rem $light-mode-shadow;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
+    .day,
+    .night {
+      text-align: center;
+      h3 {
+        font-size: 1rem;
+      }
+    }
+    .temperature {
+      display: flex;
+      gap: 3rem;
+      img {
+        width: 5rem;
+      }
+    }
+  }
+}

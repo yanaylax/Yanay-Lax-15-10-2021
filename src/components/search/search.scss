@@ -1,0 +1,33 @@
+@import "src/vars";
+
+.search_owner {
+  position: relative;
+  .search {
+    display: flex;
+    padding: 0.8rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 0.3rem $light-mode-shadow;
+    background-color: $light-mode-background-secondary;
+    border-radius: 0.5rem;
+    transition: all 0.1s;
+    &:hover {
+      box-shadow: 0 0 0.5rem $light-mode-shadow;
+    }
+    &:focus-within {
+      box-shadow: 0 0 0.5rem $light-mode-shadow;
+    }
+  }
+  input {
+    border: none;
+    margin: 0;
+    padding: 0;
+    background-color: $light-mode-background-secondary;
+    width: 100%;
+    outline: none;
+    font-size: 1.5em;
+    margin-left: 0.8rem;
+  }
+  img {
+    height: 2rem;
+  }
+}
