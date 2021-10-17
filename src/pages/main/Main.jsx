@@ -61,7 +61,7 @@ export default function Main() {
   const darkMode = useSelector((state) => state.weatherSlice.darkMode);
 
   const checkWeatherIcon = () => {
-    if (currentLocation.WeatherIcon) {
+    try {
       const weatherIcon = currentLocation.WeatherIcon;
 
       if (weatherIcon) {
@@ -74,6 +74,8 @@ export default function Main() {
         else if (weatherIcon >= 39 && weatherIcon <= 42) return rainyNight;
         else if (weatherIcon >= 43) return snowyNight;
       } else return "";
+    } catch (err) {
+      console.log(err);
     }
   };
 
