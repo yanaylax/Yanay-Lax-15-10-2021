@@ -179,17 +179,13 @@ export default function Main() {
             <div className="weather_details">
               <h1>{currentName}</h1>
               <h2>
-                {currentLocation.Temperature
-                  ? isMetric
-                    ? currentLocation.Temperature.Metric.Value
-                    : currentLocation.Temperature.Imperial.Value
-                  : ""}
+                {isMetric
+                  ? currentLocation.Temperature.Metric.Value
+                  : currentLocation.Temperature.Imperial.Value}
                 &#176;
                 {isMetric
-                  ? currentLocation.Temperature
-                    ? currentLocation.Temperature.Metric.Unit
-                    : currentLocation.Temperature.Imperial.Unit
-                  : ""}
+                  ? currentLocation.Temperature.Metric.Unit
+                  : currentLocation.Temperature.Imperial.Unit}
               </h2>
               <div className="weather_description">
                 <h3>

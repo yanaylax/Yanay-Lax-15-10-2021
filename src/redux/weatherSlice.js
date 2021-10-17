@@ -36,7 +36,7 @@ const initialState = {
         LocalObservationDateTime: "",
         EpochTime: 0,
         WeatherText: "",
-        WeatherIcon: 0,
+        WeatherIcon: 1,
         HasPrecipitation: false,
         PrecipitationType: null,
         IsDayTime: false,
