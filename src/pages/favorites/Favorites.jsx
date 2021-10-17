@@ -50,7 +50,7 @@ export function FavoriteLocation({ location }) {
   useEffect(() => {
     axios
       .get(
-        `http://dataservice.accuweather.com/currentconditions/v1/${location.Key}?apikey=AD6Aw9K1zHJ2caXgNTvHA9elLcDQeGMb`
+        `https://dataservice.accuweather.com/currentconditions/v1/${location.Key}?apikey=AD6Aw9K1zHJ2caXgNTvHA9elLcDQeGMb`
       )
       .then((res) => setCurrentWeather(res.data[0]));
   }, []);
