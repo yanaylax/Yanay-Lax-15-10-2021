@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import Forecast from "../../components/forecast/Forecast";
 import Search from "../../components/search/Search";
 import ReactTooltip from "react-tooltip";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
+import "react-toastify/dist/ReactToastify.css";
 import "./main.scss";
 import cloudy from "../../images/cloudy.png";
 import sunny from "../../images/sunny.png";
@@ -28,6 +31,7 @@ import {
   getMode,
   selectLocation,
 } from "../../redux/weatherSlice";
+import ErrorModal from "../../components/modal/ErrorModal";
 
 export default function Main() {
   const dispatch = useDispatch();
@@ -43,6 +47,7 @@ export default function Main() {
   const status = useSelector(
     (state) => state.weatherSlice.currentLocation.status
   );
+
   const currentLocationGeo = useSelector(
     (state) => state.weatherSlice.currentLocationGeo
   );
@@ -54,6 +59,7 @@ export default function Main() {
   );
   const favoritesByKey = favorites.map((location) => location.Key);
   const darkMode = useSelector((state) => state.weatherSlice.darkMode);
+
   const checkWeatherIcon = () => {
     const weatherIcon = currentLocation.WeatherIcon;
 
@@ -129,10 +135,24 @@ export default function Main() {
     status === "loading" ||
     (currentLocationGeo.status === "loading" && status === "loading")
   ) {
-    return <h1>loading</h1>;
+    return (
+      <div
+        className={`main_page ${darkMode ? "dark_mode" : "light_mode"} loading`}
+      >
+        {" "}
+        <Loader
+          type="Puff"
+          color={darkMode ? "#999" : "#fafafa"}
+          height={100}
+          width={100}
+          timeout={3000} //3 secs
+        />
+      </div>
+    );
   }
   return (
     <div className={`main_page ${darkMode ? "dark_mode" : "light_mode"}`}>
+      <ErrorModal />
       <div
         data-tip={darkMode ? "Switch to light mode" : "Switch to dark mode"}
         onClick={() => dispatch(changeMode(!darkMode))}

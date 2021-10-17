@@ -11,6 +11,10 @@ const initialState = {
   isMetric: true,
   darkMode: false,
   selectFromFavorites: false,
+  errorModal: {
+    open: false,
+    text: "",
+  },
   favorites: [],
   locationList: {
     status: "loading",
@@ -113,7 +117,6 @@ export const fetchFiveDayForecast = createAsyncThunk(
 export const fetchLocationByGeolocation = createAsyncThunk(
   "weather/fetchLocationByGeolocation",
   async ({ lat, lon }, { rejectWithValue }) => {
-    console.log(lat);
     try {
       const res = await getLocationByGeolocation(lat, lon);
       return await res;
@@ -163,6 +166,9 @@ export const weatherSlice = createSlice({
     selectLocation: (state, action) => {
       state.selectFromFavorites = action.payload;
     },
+    closeErrorModal: (state) => {
+      state.errorModal = { text: "", open: false };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchLocations.pending, (state) => {
@@ -175,6 +181,7 @@ export const weatherSlice = createSlice({
     });
     builder.addCase(fetchLocations.rejected, (state, action) => {
       state.locationList.status = "error";
+      state.errorModal = { text: action.error.message, open: true };
       state.locationList.error = action.error.message;
     });
     builder.addCase(fetchCurrentLocation.pending, (state) => {
@@ -187,6 +194,7 @@ export const weatherSlice = createSlice({
     });
     builder.addCase(fetchCurrentLocation.rejected, (state, action) => {
       state.currentLocation.status = "error";
+      state.errorModal = { text: action.error.message, open: true };
       state.currentLocation.error = action.error.message;
     });
 
@@ -200,6 +208,7 @@ export const weatherSlice = createSlice({
     });
     builder.addCase(fetchFiveDayForecast.rejected, (state, action) => {
       state.currentForecast.status = "error";
+      state.errorModal = { text: action.error.message, open: true };
       state.currentForecast.error = action.error.message;
     });
     builder.addCase(fetchLocationByGeolocation.pending, (state) => {
@@ -215,6 +224,7 @@ export const weatherSlice = createSlice({
     );
     builder.addCase(fetchLocationByGeolocation.rejected, (state, action) => {
       state.currentLocationGeo.status = "error";
+      state.errorModal = { text: action.error.message, open: true };
       state.currentLocationGeo.error = action.error.message;
     });
   },
@@ -231,6 +241,7 @@ export const {
   changeMode,
   getMode,
   selectLocation,
+  closeErrorModal,
 } = weatherSlice.actions;
 
 export default weatherSlice;

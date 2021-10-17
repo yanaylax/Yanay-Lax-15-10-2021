@@ -19,12 +19,14 @@
     padding: 1rem;
     background-color: $light-mode-background-color;
     box-shadow: 0 0 0.3rem $light-mode-shadow;
-    max-height: 25%;
     display: flex;
     align-items: center;
     font-size: 1.2rem;
     border-radius: 0.5rem;
     transition: background-color 0.1s ease;
+    &.loading {
+      justify-content: center;
+    }
     img {
       width: 5rem;
       margin-right: 1rem;

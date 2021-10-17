@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReactTooltip from "react-tooltip";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
+import ErrorModal from "../../components/modal/ErrorModal";
 import { Redirect } from "react-router";
 import "./favorites.scss";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,6 +30,7 @@ import snowyNight from "../../images/snowy-night.png";
 
 export function FavoriteLocation({ location }) {
   const dispatch = useDispatch();
+  const darkMode = useSelector((state) => state.weatherSlice.darkMode);
   const isMetric = useSelector((state) => state.weatherSlice.isMetric);
   const [currentWeather, setCurrentWeather] = useState({});
   const checkWeatherIcon = () => {
@@ -52,7 +56,17 @@ export function FavoriteLocation({ location }) {
   }, []);
 
   if (!currentWeather.Temperature) {
-    return <div>loading</div>;
+    return (
+      <div className="favorite_location loading">
+        <Loader
+          type="Puff"
+          color={darkMode ? "#999" : "#fafafa"}
+          height={100}
+          width={100}
+          timeout={3000} //3 secs
+        />
+      </div>
+    );
   }
 
   return (
@@ -128,6 +142,8 @@ export default function Favorites() {
 
   return (
     <div className={`favorites ${darkMode ? "dark_mode" : "light_mode"}`}>
+      <ErrorModal />
+
       <ReactTooltip />
       <div
         data-tip={darkMode ? "Switch to light mode" : "Switch to dark mode"}

@@ -3,6 +3,11 @@
 .main_page {
   height: calc(100vh - 8.5rem);
   padding: 2rem 5rem;
+  &.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .search_wrapper {
     display: flex;
     justify-content: center;
