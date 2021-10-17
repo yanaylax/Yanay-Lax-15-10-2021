@@ -61,18 +61,20 @@ export default function Main() {
   const darkMode = useSelector((state) => state.weatherSlice.darkMode);
 
   const checkWeatherIcon = () => {
-    const weatherIcon = currentLocation.WeatherIcon;
+    if (currentLocation.WeatherIcon) {
+      const weatherIcon = currentLocation.WeatherIcon;
 
-    if (weatherIcon) {
-      if (weatherIcon >= 1 && weatherIcon <= 5) return sunny;
-      else if (weatherIcon >= 6 && weatherIcon <= 11) return cloudy;
-      else if (weatherIcon >= 12 && weatherIcon <= 18) return rainy;
-      else if (weatherIcon >= 19 && weatherIcon <= 29) return snowy;
-      else if (weatherIcon >= 32 && weatherIcon <= 34) return clearNight;
-      else if (weatherIcon >= 35 && weatherIcon <= 38) return cloudyNight;
-      else if (weatherIcon >= 39 && weatherIcon <= 42) return rainyNight;
-      else if (weatherIcon >= 43) return snowyNight;
-    } else return "";
+      if (weatherIcon) {
+        if (weatherIcon >= 1 && weatherIcon <= 5) return sunny;
+        else if (weatherIcon >= 6 && weatherIcon <= 11) return cloudy;
+        else if (weatherIcon >= 12 && weatherIcon <= 18) return rainy;
+        else if (weatherIcon >= 19 && weatherIcon <= 29) return snowy;
+        else if (weatherIcon >= 32 && weatherIcon <= 34) return clearNight;
+        else if (weatherIcon >= 35 && weatherIcon <= 38) return cloudyNight;
+        else if (weatherIcon >= 39 && weatherIcon <= 42) return rainyNight;
+        else if (weatherIcon >= 43) return snowyNight;
+      } else return "";
+    }
   };
 
   useEffect(() => {
