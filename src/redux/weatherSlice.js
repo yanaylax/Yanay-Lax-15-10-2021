@@ -95,6 +95,7 @@ export const fetchCurrentLocationForFavorites = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const res = await getCurrentLocation(id);
+      console.log(res);
       return await res;
     } catch (err) {
       return rejectWithValue([], err);

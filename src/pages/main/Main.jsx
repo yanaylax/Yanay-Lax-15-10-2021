@@ -126,10 +126,11 @@ export default function Main() {
   }, [favorites]);
 
   useEffect(() => {
-    if (currentLocationGeo.location.Key) {
+    if (selectFromFavorites) return;
+    else if (currentLocationGeo.location.Key) {
       dispatch(fetchFiveDayForecast(currentLocationGeo.location.Key));
     }
-  }, [currentLocationGeo, dispatch]);
+  }, [currentLocationGeo, dispatch, selectFromFavorites]);
 
   if (
     status === "loading" ||
@@ -145,7 +146,7 @@ export default function Main() {
           color={darkMode ? "#999" : "#fafafa"}
           height={100}
           width={100}
-          timeout={3000} //3 secs
+          timeout={3000}
         />
       </div>
     );
